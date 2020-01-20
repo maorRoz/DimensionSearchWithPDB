@@ -32,6 +32,6 @@ public class SearchNode {
     }
 
     public double getF(){
-        return getG() + getH();
+        return tile.isOccupied() ? Double.POSITIVE_INFINITY: getG() + getH();
     }
 }

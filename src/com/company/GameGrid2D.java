@@ -47,4 +47,8 @@ public class GameGrid2D {
     public Tile getTile(int rowNumber, int columnNumber){
         return tiles[rowNumber][columnNumber];
     }
+
+    public Tile[][] getGrid(){
+        return tiles;
+    }
 }

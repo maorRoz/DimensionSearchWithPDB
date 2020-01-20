@@ -46,6 +46,11 @@ public class AStarSearch {
         System.out.println("popped X:"+currentNode.getTile().X+" Y: "+currentNode.getTile().Y);
         closedList.add(currentNode);
 
+        if(currentNode.getTile().isOccupied()){
+            searchState = SearchState.FAILED;
+            return;
+        }
+
         if(currentNode.getTile() == goalTile){
             searchState = SearchState.DONE;
             return;

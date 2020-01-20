@@ -16,5 +16,8 @@ public class Main {
         if(starSearch.getResult() == AStarSearch.SearchState.DONE){
             System.out.println("found!");
         }
+
+        DijkstraSearch dijkstraSearch = new DijkstraSearch();
+        HeatMap2D heatMap2D = dijkstraSearch.search(grid.getTile(1,1),grid);
     }
 }
