@@ -5,6 +5,9 @@ public class Tile {
     private TileState value;
     private Tile[] neighbors;
 
+    int X;
+    int Y;
+
     public Tile( ){
        this.setState(TileState.EMPTY);
     }
@@ -19,6 +22,9 @@ public class Tile {
 
     public void setNeighbors(Tile[] neighbors){
         this.neighbors = neighbors;
+    }
+    public Tile[] getNeighbors(){
+        return neighbors;
     }
 
     public boolean isOccupied(){
