@@ -6,33 +6,33 @@ import java.util.PriorityQueue;
 
 public class AStarSearch {
     public enum SearchState {PENDING, DONE, FAILED}
-    private PriorityQueue<SearchNode> openList;
+    private PriorityQueue<AStarSearchNode> openList;
 
-    private class SearchNodeComparator implements Comparator<SearchNode>
+    private class SearchNodeComparator implements Comparator<AStarSearchNode>
     {
         @Override
-        public int compare(SearchNode node1, SearchNode node2) {
+        public int compare(AStarSearchNode node1, AStarSearchNode node2) {
             if(node1.getF() < node2.getF()) return -1;
             if(node1.getF() > node2.getF()) return 1;
             return 0;
         }
     }
 
-    private ArrayList<SearchNode> closedList;
+    private ArrayList<AStarSearchNode> closedList;
     private Tile goalTile;
     private IHeuristic heuristic;
     private SearchState searchState;
 
     public AStarSearch(IHeuristic heuristic,Tile goalTile){
         this.heuristic = heuristic;
-        openList = new PriorityQueue<SearchNode>(1,new SearchNodeComparator());
-        closedList = new ArrayList<SearchNode>();
+        openList = new PriorityQueue<AStarSearchNode>(1,new SearchNodeComparator());
+        closedList = new ArrayList<AStarSearchNode>();
         this.goalTile = goalTile;
         searchState = SearchState.PENDING;
     }
 
     public void initSearch(Tile startTile){
-        SearchNode startNode = new SearchNode(startTile,goalTile,0,heuristic);
+        AStarSearchNode startNode = new AStarSearchNode(startTile,goalTile,0,heuristic);
         openList.add(startNode);
     }
 
@@ -42,7 +42,7 @@ public class AStarSearch {
             return;
         }
 
-        SearchNode currentNode = openList.remove();
+        AStarSearchNode currentNode = openList.remove();
         System.out.println("popped X:"+currentNode.getTile().X+" Y: "+currentNode.getTile().Y);
         closedList.add(currentNode);
 
@@ -59,14 +59,14 @@ public class AStarSearch {
         Tile[] children = currentNode.getNeighbors();
 
         for(Tile child: children){
-            SearchNode childNode = new SearchNode(child,goalTile,currentNode.getG()+ 1,heuristic);
+            AStarSearchNode childNode = new AStarSearchNode(child,goalTile,currentNode.getG()+ 1,heuristic);
             openList.add(childNode);
         }
     }
 
     public void clearSearch(){
-        openList = new PriorityQueue<SearchNode>(1,new SearchNodeComparator());
-        closedList = new ArrayList<SearchNode>();
+        openList = new PriorityQueue<AStarSearchNode>(1,new SearchNodeComparator());
+        closedList = new ArrayList<AStarSearchNode>();
         searchState = SearchState.PENDING;
     }
 

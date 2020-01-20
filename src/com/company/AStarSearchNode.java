@@ -1,6 +1,6 @@
 package com.company;
 
-public class SearchNode {
+public class AStarSearchNode {
     private Tile tile;
     private Tile goalTile;
 
@@ -8,7 +8,7 @@ public class SearchNode {
 
     private IHeuristic heuristic;
 
-    public SearchNode(Tile tile,Tile goalTile, int distanceFromStart, IHeuristic heuristic){
+    public AStarSearchNode(Tile tile, Tile goalTile, int distanceFromStart, IHeuristic heuristic){
         this.tile = tile;
         this.goalTile = goalTile;
         this.distanceFromStart = distanceFromStart;
