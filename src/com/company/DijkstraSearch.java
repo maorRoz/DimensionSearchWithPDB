@@ -49,7 +49,7 @@ public class DijkstraSearch {
         while(!vertexList.isEmpty()){
             DijkstraSearchNode currentNode = vertexList.remove();
 
-            heatMap.setTile(currentNode.getTile().X,currentNode.getTile().Y, currentNode.getG());
+            heatMap.setTile(currentNode.getTile().Y,currentNode.getTile().X, currentNode.getG());
 
             for(Tile neighbor: currentNode.getNeighbors()){
                 int newDistance = currentNode.getF() + 1;
