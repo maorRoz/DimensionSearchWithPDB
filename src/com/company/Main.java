@@ -37,7 +37,16 @@ public class Main {
 
     public static void main(String[] args) {
         // example of loading map file from system
-        GameGrid2D x = MapFileLoader.loadMapFile("/Users/maorr/Downloads/arena2.map");
+        GameGrid2D x = MapFileLoader.loadMapFile("C:\\Users\\tal.BGU-USERS.000\\Downloads\\arena.map");
+
+        for (int i = 0; i <x.tiles[0].length ; i++) {
+            for (int j = 0; j <x.tiles[1].length ; j++) {
+                System.out.print(x.tiles[i][j].getvalue());
+
+            }
+            System.out.println();
+
+        }
 
 
         GameGrid2D grid = new GameGrid2D(4,4);
