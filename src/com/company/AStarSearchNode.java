@@ -6,12 +6,15 @@ public class AStarSearchNode {
 
     private int distanceFromStart;
 
+    private AStarSearchNode previousNode;
+
     private IHeuristic heuristic;
 
-    public AStarSearchNode(Tile tile, Tile goalTile, int distanceFromStart, IHeuristic heuristic){
+    public AStarSearchNode(Tile tile, Tile goalTile, int distanceFromStart,AStarSearchNode previousNode, IHeuristic heuristic){
         this.tile = tile;
         this.goalTile = goalTile;
         this.distanceFromStart = distanceFromStart;
+        this.previousNode = previousNode;
         this.heuristic = heuristic;
     }
 

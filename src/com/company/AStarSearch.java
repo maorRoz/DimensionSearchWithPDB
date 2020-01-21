@@ -8,6 +8,8 @@ public class AStarSearch {
     public enum SearchState {PENDING, DONE, FAILED}
     private PriorityQueue<AStarSearchNode> openList;
 
+    private AStarSearchNode resultPath;
+
     private class SearchNodeComparator implements Comparator<AStarSearchNode>
     {
         @Override
@@ -29,10 +31,11 @@ public class AStarSearch {
         closedList = new ArrayList<AStarSearchNode>();
         this.goalTile = goalTile;
         searchState = SearchState.PENDING;
+        resultPath = null;
     }
 
     public void initSearch(Tile startTile){
-        AStarSearchNode startNode = new AStarSearchNode(startTile,goalTile,0,heuristic);
+        AStarSearchNode startNode = new AStarSearchNode(startTile,goalTile,0,null,heuristic);
         openList.add(startNode);
     }
 
@@ -53,13 +56,14 @@ public class AStarSearch {
 
         if(currentNode.getTile() == goalTile){
             searchState = SearchState.DONE;
+            resultPath = currentNode;
             return;
         }
 
         Tile[] children = currentNode.getNeighbors();
 
         for(Tile child: children){
-            AStarSearchNode childNode = new AStarSearchNode(child,goalTile,currentNode.getG()+ 1,heuristic);
+            AStarSearchNode childNode = new AStarSearchNode(child,goalTile,currentNode.getG()+ 1,currentNode,heuristic);
             openList.add(childNode);
         }
     }
@@ -68,14 +72,19 @@ public class AStarSearch {
         openList = new PriorityQueue<AStarSearchNode>(1,new SearchNodeComparator());
         closedList = new ArrayList<AStarSearchNode>();
         searchState = SearchState.PENDING;
+        resultPath = null;
     }
 
     public Tile[] getRoute(){
         return closedList.toArray(new Tile[closedList.size()]);
     }
 
-    public SearchState getResult(){
+    public SearchState getResultStatus(){
         return searchState;
+    }
+
+    public AStarSearchNode getResult(){
+        return resultPath;
     }
 
 

@@ -9,11 +9,11 @@ public class Main {
 
         starSearch.initSearch(grid.getTile(1,1));
 
-        while(starSearch.getResult() != AStarSearch.SearchState.DONE && starSearch.getResult() != AStarSearch.SearchState.FAILED){
+        while(starSearch.getResultStatus() != AStarSearch.SearchState.DONE && starSearch.getResultStatus() != AStarSearch.SearchState.FAILED){
             starSearch.nextStep();
         }
 
-        if(starSearch.getResult() == AStarSearch.SearchState.DONE){
+        if(starSearch.getResultStatus() == AStarSearch.SearchState.DONE){
             System.out.println("found!");
         }
 
