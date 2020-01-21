@@ -19,7 +19,7 @@ public class Main {
         AStarSearch euclideanSearch = new AStarSearch(new EuclideanDistanceHeuristic(), grid.getTile(goal.X,goal.Y));
         AStarSearch manHattenDistanceSearch = new AStarSearch(new ManhattanDistanceHeuristic(), grid.getTile(goal.X,goal.Y));
 
-        GameGrid2DToPDBConverter converter = new GameGrid2DToPDBConverter(grid);
+        GameGrid2DToPDBConverter converter = new GameGrid2DToPDBConverter(grid, new Create4PartitionPDB());
         PDB pdb  = converter.getPDB();
 
         HeatMap2D heatMapOfGoalPivot = pdb.getHeatMap(goal);
@@ -36,8 +36,6 @@ public class Main {
 
     public static void main(String[] args) {
         GameGrid2D grid = new GameGrid2D(4,4);
-
-       // TestCase(grid,grid.getTile(3,3),grid.getTile(1,1));
 
         TestCase(grid,grid.getTile(1,2),grid.getTile(1,1));
     }
