@@ -36,6 +36,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        // example of loading map file from system
+        GameGrid2D x = MapFileLoader.loadMapFile("/Users/maorr/Downloads/arena2.map");
+
+
         GameGrid2D grid = new GameGrid2D(4,4);
 
         TestCase(grid,grid.getTile(1,2),grid.getTile(1,1));
