@@ -12,6 +12,7 @@ public class Main {
         if(starSearch.getResultStatus() == AStarSearch.SearchState.DONE){
             System.out.println("found!");
         }
+        System.out.println("expanded "+starSearch.getNodesExpanded()+" nodes");
         System.out.println();
     }
 

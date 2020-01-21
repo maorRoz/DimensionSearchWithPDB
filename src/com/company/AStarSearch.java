@@ -24,6 +24,7 @@ public class AStarSearch {
     private Tile goalTile;
     private IHeuristic heuristic;
     private SearchState searchState;
+    private int nodesExpanded;
 
     public AStarSearch(IHeuristic heuristic,Tile goalTile){
         this.heuristic = heuristic;
@@ -32,6 +33,7 @@ public class AStarSearch {
         this.goalTile = goalTile;
         searchState = SearchState.PENDING;
         resultPath = null;
+        nodesExpanded = 0;
     }
 
     public void initSearch(Tile startTile){
@@ -60,6 +62,7 @@ public class AStarSearch {
             return;
         }
 
+        nodesExpanded++;
         Tile[] children = currentNode.getNeighbors();
 
         for(Tile child: children){
@@ -73,10 +76,15 @@ public class AStarSearch {
         closedList = new ArrayList<AStarSearchNode>();
         searchState = SearchState.PENDING;
         resultPath = null;
+        nodesExpanded = 0;
     }
 
     public Tile[] getRoute(){
         return closedList.toArray(new Tile[closedList.size()]);
+    }
+
+    public int getNodesExpanded(){
+        return nodesExpanded;
     }
 
     public SearchState getResultStatus(){
