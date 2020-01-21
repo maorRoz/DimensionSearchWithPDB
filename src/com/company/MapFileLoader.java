@@ -41,6 +41,7 @@ public class MapFileLoader {
                     boolean isOccupied = input == '@' || input =='T';
                     gameGrid2D.setTile(i,j,isOccupied ? Tile.TileState.OCCUPIED : Tile.TileState.EMPTY);
                 }
+                bufferedReader.read();
             }
         } catch(Exception e){
 
