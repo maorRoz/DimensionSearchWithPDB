@@ -14,4 +14,8 @@ public class HeatMap2D {
     public void setTile(int numberOfRow, int numberOfColumn, int value){
         tiles[numberOfRow][numberOfColumn] = value;
     }
+
+    public int getTileDistance(int numberOfRow, int numberOfColumn){
+        return tiles[numberOfRow][numberOfColumn];
+    }
 }
