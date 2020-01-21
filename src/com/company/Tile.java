@@ -1,6 +1,8 @@
 package com.company;
 
 public class Tile {
+
+
     public enum TileState {EMPTY,OCCUPIED}
     private TileState value;
     private Tile[] neighbors;
@@ -29,6 +31,10 @@ public class Tile {
 
     public boolean isOccupied(){
         return value == TileState.OCCUPIED;
+    }
+    public String getvalue() {
+        if(value == TileState.EMPTY )return ".";
+        return "x";
     }
 
 

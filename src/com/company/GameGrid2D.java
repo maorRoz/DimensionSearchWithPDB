@@ -2,7 +2,7 @@ package com.company;
 import java.util.ArrayList;
 
 public class GameGrid2D {
-    private Tile[][] tiles;
+    public Tile[][] tiles;
 
     public GameGrid2D(int numberOfColumns, int numberOfRows){
         if(numberOfColumns <= 0 || numberOfRows <= 0){
