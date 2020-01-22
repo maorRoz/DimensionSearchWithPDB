@@ -1,6 +1,8 @@
 package com.company;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 public class MapFileLoader {
     private static int getHeight(String heightLine){
@@ -41,8 +43,7 @@ public class MapFileLoader {
                     boolean isOccupied = input == '@' || input =='T';
                     gameGrid2D.setTile(i,j,isOccupied ? Tile.TileState.OCCUPIED : Tile.TileState.EMPTY);
                 }
-                bufferedReader.read();
-            }
+                bufferedReader.read(); }
         } catch(Exception e){
 
         }

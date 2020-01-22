@@ -17,8 +17,8 @@ public class DijkstraSearchNode {
         return tile;
     }
 
-    public Tile[] getNeighbors(){
-        return tile.getNeighbors();
+    public Tile[] getNeighbors(GameGrid2D grid){
+        return tile.getNeighbors(grid);
     }
 
     public int getG(){

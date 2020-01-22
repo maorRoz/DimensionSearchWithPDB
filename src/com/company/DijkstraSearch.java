@@ -51,8 +51,8 @@ public class DijkstraSearch {
 
             heatMap.setTile(currentNode.getTile().Y,currentNode.getTile().X, currentNode.getG());
 
-            for(Tile neighbor: currentNode.getNeighbors()){
-                int newDistance = currentNode.getF() + 1;
+            for(Tile neighbor: currentNode.getNeighbors(gameGrid)){
+                int newDistance = neighbor.isOccupied() ? Integer.MAX_VALUE : currentNode.getF() + 1;
 
                 Iterator<DijkstraSearchNode> iterator = vertexList.iterator();
 

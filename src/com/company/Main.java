@@ -1,56 +1,63 @@
 package com.company;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Main {
 
-    public static void MakeSearch(AStarSearch starSearch, Tile start){
-        System.out.println("---------------------------------");
-        starSearch.initSearch(start);
-        while(starSearch.getResultStatus() != AStarSearch.SearchState.DONE && starSearch.getResultStatus() != AStarSearch.SearchState.FAILED){
-            starSearch.nextStep();
-        }
-
-        if(starSearch.getResultStatus() == AStarSearch.SearchState.DONE){
-            System.out.println("found!");
-        }
-        System.out.println("expanded "+starSearch.getNodesExpanded()+" nodes");
-        System.out.println();
-    }
-
-    public static void TestCase(GameGrid2D grid, Tile goal, Tile start){
-        AStarSearch euclideanSearch = new AStarSearch(new EuclideanDistanceHeuristic(), grid.getTile(goal.X,goal.Y));
-        AStarSearch manHattenDistanceSearch = new AStarSearch(new ManhattanDistanceHeuristic(), grid.getTile(goal.X,goal.Y));
-
-        GameGrid2DToPDBConverter converter = new GameGrid2DToPDBConverter(grid, new Create4PartitionPDB());
-        PDB pdb  = converter.getPDB();
-
-        HeatMap2D heatMapOfGoalPivot = pdb.getHeatMap(goal);
-
-        AStarSearch  pdbHeatMapSearch = new AStarSearch(new HeatMapDistanceHeuristic(heatMapOfGoalPivot),grid.getTile(goal.X,goal.Y));
-
-        System.out.println("Euclidean Distance Search:");
-    //    MakeSearch(euclideanSearch,start);
-        System.out.println("Manhatten Distance Search:");
-        MakeSearch(manHattenDistanceSearch, start);
-        System.out.println("PDB HeatMap Search:");
-        MakeSearch(pdbHeatMapSearch,start);
-    }
-
     public static void main(String[] args) {
-        // example of loading map file from system
-        GameGrid2D x = MapFileLoader.loadMapFile("C:\\Users\\tal.BGU-USERS.000\\Downloads\\arena.map");
-
-        for (int i = 0; i <x.tiles[0].length ; i++) {
-            for (int j = 0; j <x.tiles[1].length ; j++) {
-                System.out.print(x.tiles[i][j].getvalue());
-
-            }
-            System.out.println();
-
-        }
+//		long start = System.currentTimeMillis();
+        System.out.println("Start!");
 
 
-        GameGrid2D grid = new GameGrid2D(4,4);
+        AStarSearch astar = new AStarSearch();
+        GameGrid2D play = MapFileLoader.loadMapFile("/Users/maorr/Downloads/arena.map");
 
-        TestCase(grid,grid.getTile(1,2),grid.getTile(1,1));
+        solveInstances(astar,play.gettheGrid() , new ManhattanDistanceHeuristic());
+        solveInstances(astar, play.gettheGrid(), new AirGapDistanceHeuristic());
+
+        solveInstances(astar, play.gettheGrid(), new HitmapHeuristic(play,play.getTile(10,10)));
+
+
+
+        System.out.println("");
+        System.out.println("Done!");
+//		System.out.println("time: "+(System.currentTimeMillis() - start));
     }
+
+
+    public static void solveInstances(ASearch solvers, int [][] instance, IHeuristic heuristic) {
+
+            long totalTime = 0;
+
+                Map problem = new Map(instance,1,2,1,7, heuristic);
+
+                    long startTime = System.nanoTime();
+                    List<IProblemMove> solution = solvers.solve(problem);
+                    long finishTime = System.nanoTime();
+
+                  //  if (cost >= 0)        // valid solution
+                    {
+                        // printSolution(problem, solution);
+
+                        System.out.println("Moves: " + solution.size());
+                        System.out.println("Time:  " + (finishTime - startTime) / 1000000.0 + " ms");
+                        System.out.println(solution);
+                        totalTime += (finishTime - startTime) / 1000000.0;
+                    }// else                // invalid solution
+                      //  System.out.println("Invalid solution.");
+
+                System.out.println("");
+
+            System.out.println("Total time:  " + totalTime / 60000.0 + " min");
+            System.out.println("");
+
+    }
+
+
+
+
 }

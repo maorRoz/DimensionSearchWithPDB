@@ -1,5 +1,7 @@
 package com.company;
 
-public interface IHeuristic {
-    double calculateHeuristic(Tile currentTile, Tile goalTile);
+public interface IHeuristic 
+{
+	public double getHeuristic(IProblemState problemState);
+	public void HeuristicName();
 }

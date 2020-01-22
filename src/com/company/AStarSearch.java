@@ -1,99 +1,119 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 
-public class AStarSearch {
-    public enum SearchState {PENDING, DONE, FAILED}
-    private PriorityQueue<AStarSearchNode> openList;
+public class AStarSearch extends ASearch
+{
+	private PriorityQueue<ASearchNode> openPriorityQueue;
+	private HashMap<String, ASearchNode> openHashMap;
+	private HashSet<String> closed;
 
-    private AStarSearchNode resultPath;
 
-    private class SearchNodeComparator implements Comparator<AStarSearchNode>
-    {
-        @Override
-        public int compare(AStarSearchNode node1, AStarSearchNode node2) {
-            if(node1.getF() < node2.getF()) return -1;
-            if(node1.getF() > node2.getF()) return 1;
-            return 0;
-        }
-    }
+	private class ASearchNodeComparator implements Comparator<ASearchNode>
+	{
+		@Override
+		public int compare(ASearchNode o1, ASearchNode o2) {
+			if (o1.getF() < o2.getF()) return -1;
+			if (o1.getF() > o2.getF()) return 1;
+			if (o1.getH() < o2.getH()) return -1;
+			if (o1.getH() > o2.getH()) return 1;
+			if (o1.getG() < o2.getG()) return -1;
+			if (o1.getG() > o2.getG()) return 1;
+			return 0;
+		}
+	}
 
-    private ArrayList<AStarSearchNode> closedList;
-    private Tile goalTile;
-    private IHeuristic heuristic;
-    private SearchState searchState;
-    private int nodesExpanded;
+	@Override
+	public String getSolverName()
+	{
+		return "AStar";
+	}
 
-    public AStarSearch(IHeuristic heuristic,Tile goalTile){
-        this.heuristic = heuristic;
-        openList = new PriorityQueue<AStarSearchNode>(1,new SearchNodeComparator());
-        closedList = new ArrayList<AStarSearchNode>();
-        this.goalTile = goalTile;
-        searchState = SearchState.PENDING;
-        resultPath = null;
-        nodesExpanded = 0;
-    }
+	@Override
+	public ASearchNode createSearchRoot
+			(
+					IProblemState problemState
+			)
+	{
+		ASearchNode newNode = new HeuristicSearchNode(problemState);
+		return newNode;
+	}
 
-    public void initSearch(Tile startTile){
-        AStarSearchNode startNode = new AStarSearchNode(startTile,goalTile,0,null,heuristic);
-        openList.add(startNode);
-    }
+	@Override
+	public void initLists()
+	{
+		openPriorityQueue = new PriorityQueue<ASearchNode>(1,new ASearchNodeComparator());
+		openHashMap = new HashMap<String, ASearchNode>();
+		closed = new HashSet<String>();
+	}
 
-    public void nextStep(){
-        if(openList.isEmpty()){
-            searchState = SearchState.FAILED;
-            return;
-        }
+	@Override
+	public ASearchNode getOpen
+			(
+					ASearchNode node
+			)
+	{
+		return openHashMap.get(node._currentProblemState.toString());
+	}
 
-        AStarSearchNode currentNode = openList.remove();
-        System.out.println("popped X:"+currentNode.getTile().X+" Y: "+currentNode.getTile().Y);
-        closedList.add(currentNode);
+	@Override
+	public boolean isOpen
+			(
+					ASearchNode node
+			)
+	{
+		return openHashMap.containsKey(node._currentProblemState.toString());
+	}
 
-        if(currentNode.getTile().isOccupied()){
-            searchState = SearchState.FAILED;
-            return;
-        }
+	@Override
+	public boolean isClosed
+			(
+					ASearchNode node
+			)
+	{
+		return closed.contains(node._currentProblemState.toString());
+	}
 
-        if(currentNode.getTile() == goalTile){
-            searchState = SearchState.DONE;
-            resultPath = currentNode;
-            return;
-        }
+	@Override
+	public void addToOpen
+			(
+					ASearchNode node
+			)
+	{
+		String state = node._currentProblemState.toString();
+		ASearchNode nodeInOpen = openHashMap.get(state);
+		if (nodeInOpen != null)
+			openPriorityQueue.remove(nodeInOpen);
+		openPriorityQueue.add(node);
+		openHashMap.put(state, node);
 
-        nodesExpanded++;
-        Tile[] children = currentNode.getNeighbors();
+		count_node++; //counting node that expend
+	}
 
-        for(Tile child: children){
-            AStarSearchNode childNode = new AStarSearchNode(child,goalTile,currentNode.getG()+ 1,currentNode,heuristic);
-            openList.add(childNode);
-        }
-    }
+	@Override
+	public void addToClosed
+			(
+					ASearchNode node
+			)
+	{
+		closed.add(node._currentProblemState.toString());
+	}
 
-    public void clearSearch(){
-        openList = new PriorityQueue<AStarSearchNode>(1,new SearchNodeComparator());
-        closedList = new ArrayList<AStarSearchNode>();
-        searchState = SearchState.PENDING;
-        resultPath = null;
-        nodesExpanded = 0;
-    }
+	@Override
+	public int openSize()
+	{
+		return openPriorityQueue.size();
+	}
 
-    public Tile[] getRoute(){
-        return closedList.toArray(new Tile[closedList.size()]);
-    }
-
-    public int getNodesExpanded(){
-        return nodesExpanded;
-    }
-
-    public SearchState getResultStatus(){
-        return searchState;
-    }
-
-    public AStarSearchNode getResult(){
-        return resultPath;
-    }
-
+	@Override
+	public ASearchNode getBest()
+	{
+		ASearchNode node = openPriorityQueue.remove();
+		openHashMap.remove(node._currentProblemState.toString());
+		return node;
+	}
 
 }
